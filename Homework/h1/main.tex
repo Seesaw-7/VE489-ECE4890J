@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\setcounter{MaxMatrixCols}{20}
+
+\title{489h1}
+\author{Wei Yinuo}
+\date{June 2023}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+    \item
+    Minimum sampling rate = 0 since no quality of the reconstructed signal is required.
+    \newline
+    Assume no loss in reconstruction is required. Further assume that the 6kHz of bandwidth corresponds to a baseband bandwidth, with a frequency range [0, 6000] (Hz). By Nyquist - Shannon Sampling Theorem, the sampling rate
+    $$f_s=2\times f_{max}=12 \text{ kHz}.$$
+    
+    \item
+    Assume $\frac{V}{\delta_x}=4$, $$6m-7.27>55.$$ Thus, the minimum bits needed is $$m_{min}=11 \text{ bits}.$$
+    The final bit rate of the digital audio signal is thus
+    $$11\times 12\times 10^{3} = 132 \text{ kbps}$$
+    \item Digital modulation is a process that take digital signals (bits) as inputs and outputs symbols (often analog signals, which are often sinusoidal waves).
+    It can thus be considered as a Digital to Analog Conversion. 
+    To be specific, it converts bits into baseband waveforms with different signal levels. Information of the message signal is embedded into the carrier signal and creates the resulting modulated signal.
+    Common methods of modulation includes Amplitude Shift Keying, Frequency Shift Keying, Phase Shift Keying, Quadrature Amplitude Modulation, OFDM and so on.
+    
+    \item Since the transmission power has upper limit, the symbol amplitude has its limit. Thus, to increase the bit number per symbol, only density of levels can be increased. However, in reality, if noise occurs, the difficulty of figuring out the levels from the receiver side increases, leading to higher data error and less reliable communication. 
+    
+    \item 
+    Suppose it is in an AWGN channel. By Shannon - Hartley Theorem,
+    $$C=W_c\times \log _2 (1+SNR) = 20 \times 10^6 \times \log _2(1+10^{\frac{25}{10}})=166.19 \text{ Mbps}.$$
+    \item
+    The total bandwidth doubles. Thus,
+    $$C_{passband}=2\times C= 332.37\text{ Mbps}.$$
+    
+    \item
+    \begin{equation*}
+        \begin{split}
+            0&=b_5+b_5 = b_2+b_2+b_4+b_5\\
+            0&=b_6+b_6 = b_1+b_3+b_4+b_6\\
+            0&=b_7+b_7 = b_1+b_2+b_3+b_7
+        \end{split}
+    \end{equation*}
+    Thus, the parity check matrix is 
+    $$
+    \begin{pmatrix}
+        0 &1&1&1&1&0&0 \\
+        1&0&1&1&0&1&0\\
+        1&1&1&0&0&0&1
+    \end{pmatrix}
+    $$  
+    
+    \item
+    We first deduce a table representing the pair-checking relationship.
+    \begin{center}
+        \begin{tabular}{c c c c c c c c c c c c }
+    
+             & 3 &5 &6&7&9&10&11&12&13&14&15\\
+            1& x &x & &x&x& &x & &x& &x\\
+            2&x & &x&x& &x&x && &x&x\\
+            4& &x&x&x &&&&x&x&x&x\\
+            8& & & & &x&x&x&x&x&x&x
+            
+        \end{tabular}        
+    \end{center}
+    Then, we can observe that each non-zero 3-tuple appears once as a column in check matrix if we consider adding columns 1, 2, 4 and 8.
+    Thus, the parity check matrix can thus be deduced as 
+    $$
+    \begin{pmatrix}
+        1 & 0&1&0&1&0&1&0&1&0&1&0&1&0&1\\
+        0 &1&1 &0&0&1&1 &0  &0&1&1&0&0&1&1\\
+        0 &0&0&1&1&1  &1  &0 &0&0&0&1&1&1&1\\
+        0&0&0&0&0&0&0&1&1&1&1&1&1&1&1
+        
+    \end{pmatrix}
+    $$
+\end{enumerate}
+
+\end{document}
