@@ -1,0 +1,182 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{enumerate}
+\usepackage{amsmath}
+
+\title{VE489 Homework2}
+\author{Wei Yinuo 520370910103}
+\date{June 2023}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+    \item 
+    Framing maps streams of bits to frames of bits with boundaries, payloads, and possibly control bits, flags, character counts and error checking bits. It packs data into certain sizes to facilitate later transmission.
+    \newline
+    Framing is important in logical link layer based on the following benefits.
+    \begin{itemize}
+        \item Readability of transmitted bit streams
+        \newline
+        By adding beginning, ending and other flags, bit streams can be easily decoded. 
+        \item Transmission Reliability
+        \newline
+        With framing, loss of bits can be detected by fixed size frames or frame size indicator bits. Error control bits can be implemented and included in trailers. Flow control is possible so that corruptions on the receiver's side can be avoided.
+        Besides, frames can be distinguished from each other in a certain period. 
+        \item Addressing enabled
+        \newline
+        Entries for source and destination addresses are enabled in the frame (but addressing is not necessarily done in LLC). 
+    \end{itemize}
+    
+    \item
+    \begin{enumerate}[1)]
+        \item 
+        Assume HDLC is applied. 
+        Stuffed bits are indicated by italics.
+        \newline
+        \textbf{01111110} 01101111 1\textbf{0}1101011 10110100 00101111 1\textbf{0}1011011 1011111\textbf{0}1 11010111 11\textbf{0}11111\textbf{0}0 \textbf{01111110}
+        
+        \item
+        For every consecutive 5 1s, if the next bit is 0, then it is a stuffed bit and remove this 0. If the next two bits are 10, then a flag is detected. If the next two bits are 11, then an error is detected.
+        \newline 
+        For the given bit stream, after the first 5 consecutive 1s, two bits 10 are detected, indicating a flag. So, the flag 01111110 is removed. After the second 5 consecutive 1s, a 0 is detected, indicating it is a stuffed bit. So, 0 is removed. After the third 5 consecutive 1s, 11 is detected, indicating bit error. Since bit error only occurs at stuffed bit, the sixth 1 is removed. After the fourth 5 consecutive 1s, 10 is detected. So remove the flag 01111110. Thus, the de-stuffed bit stream is 
+        0111110011111101010011.
+
+    \end{enumerate}
+    
+    \item
+    \begin{enumerate}[1)]
+    \item
+    Key mechanism of three ARQ protocols discussed in class.
+    \begin{center}
+        \begin{tabular}{cccc}
+            &  timeout &ACK/NAK & frame sequence\\
+         \hline
+            Stop-and-Wait ARQ 
+            & \begin{tabular}{@{}c@{}} wait for ACK or \\ timeout expiration  \\ after every sending\end{tabular}
+            & ACK
+            & 0, 1 cyclic\\
+        \hline
+            Go-Back N ARQ 
+            & \begin{tabular}{@{}c@{}} resend all if\\ window exhausted \\ (or timeout expired) \end{tabular}
+            & \begin{tabular}{@{}c@{}} ACK with\\sequence\end{tabular}
+            & \begin{tabular}{@{}c@{}} 0 to $2^m-1$\\cyclic\end{tabular}\\
+        \hline
+            Selective Repeat ARQ  
+            &\begin{tabular}{@{}c@{}} timeout causes\\ individual\\ corresponding \\frame to be resent\end{tabular}
+            & \begin{tabular}{@{}c@{}} ACK with \\sequence\\ NAK if out \\of sequence\end{tabular}
+            &\begin{tabular}{@{}c@{}} 0 to $2^m-1$\\cyclic\end{tabular}
+        \end{tabular}
+    \end{center}
+    \begin{center}
+        \begin{tabular}{ccc}
+            &receiving window & sending window\\
+         \hline
+            Stop-and-Wait ARQ 
+            & none
+            & none
+            \\
+        \hline
+            Go-Back N ARQ 
+            &  none
+            & $W_s \leq 2^m-1$
+            \\
+        \hline
+            Selective Repeat ARQ  
+            &$W_s+W_r \leq 2^m$
+            & $W_s+W_r \leq 2^m$
+            
+        \end{tabular}
+    \end{center}
+    
+    
+    \item
+    \begin{enumerate}
+        \item Stop-and-Wait ARQ
+        \newline 
+        Error-free:
+        \newline
+        Denote 
+        \newline $t_0$ as total time needed to transmit and receive 1 frame, 
+        \newline $t_f$ as $T_x$, namely time needed to send out the bit stream from the sender side, 
+        \newline $t_{ack}$ as time needed to send out the ack bit stream from the receiver side, 
+        \newline $t_{prop}$ as the propagation time in the channel, 
+        \newline$p_{proc}$ as the process time for a received frame or received ACK
+        \newline R as the transmission data rate in this channel,
+        \newline $R_{eff}$ as the effective transmission rate
+        \newline $n_a$ as the total number of bits of the ACK,
+        \newline $n_f$ as the total number of bits of the frame,
+        \newline $n_0$ as bits for the header and CRC,
+        \newline $\eta$ as the transmission efficiency.
+        
+        \begin{equation*}
+            \begin{split}
+                t_0 &=2p_{proc}+2p_{prog}+t_f+t_{ack} \\
+                    &= 2p_{proc}+2p_{prog}+\frac{n_f+n_a}{R} 
+            \end{split}
+        \end{equation*}
+        \begin{equation*}
+                R_{eff}=\frac{n_f-n_0}{t_0}
+        \end{equation*}
+        \begin{equation*}
+            \begin{split}
+                 \eta &= \frac{R_{eff}}{R}\\
+                      &= \frac{1-\frac{n_0}{n_f}}{1+\frac{n_a}{n_f}+\frac{2(t_{prop}+t_{proc})R}{n_f}}
+            \end{split}
+        \end{equation*}
+        Erroneous:
+        \newline
+        Denote 
+        \newline $P_e$ as the probability that a frame arrives with error,
+        \newline $\eta _e$ as the transmission efficiency with error.
+        \begin{equation*}
+            \begin{split}
+                \eta_e &=\eta \times (1-P_e) \\             &=(1-P_e)\frac{1-\frac{n_0}{n_f}}{1+\frac{n_a}{n_f}+\frac{2(t_{prop}+t_{proc})R}{n_f}} 
+            \end{split}
+        \end{equation*}
+
+        \item
+        Go-Back N ARQ
+        \newline Error-free:
+        \begin{equation*}
+            \begin{split}
+                \eta &= \frac{R_{eff}}{R}\\
+                &=\frac{\frac{n_f-n_0}{t_0}}{R}\\
+                &=1-\frac{n_0}{n_f}
+            \end{split}
+        \end{equation*}
+        
+        \newline Errorneous:
+        \newline Denote $t_e$ as total time needed for transmitting and receiving 1 frame if error occurs with probability $P_e$,
+        \begin{equation*}
+                t_e = (1-P_e)t_0+P_e(t_0+\frac{W_st_0}{1-P_e})
+        \end{equation*}
+        \begin{equation*}
+            \begin{split}
+                \eta_e = (1-P_e)\frac{1-\frac{n_0}{n_f}}{1+(W_s-1)P_e}
+            \end{split}
+        \end{equation*}
+        
+        
+        \item
+        Selective Repeat ARQ
+        \newline Error-free:
+        \begin{equation*}
+            \begin{split}
+                \eta &= \frac{R_{eff}}{R}\\
+                &=\frac{\frac{n_f-n_0}{t_0}}{R}\\
+                &=1-\frac{n_0}{n_f}
+            \end{split}
+        \end{equation*}
+        \newline Errorneous:
+        $$t_e=\frac{1}{1-P_e}t_0$$
+        $$\eta_e= (1-P_e)(1-\frac{n_0}{n_f})$$
+        
+    \end{enumerate}
+    
+    \end{enumerate}
+    
+\end{enumerate}
+
+\end{document}
