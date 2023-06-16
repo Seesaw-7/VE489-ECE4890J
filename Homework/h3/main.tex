@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{VE489 Homework3}
+\author{Wei Yinuo 520370910103}
+\date{June 2023}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+    \item 
+    As introduced in the lecture slides 4, Multiple Access is a function for multiple nodes’ PMP/mesh (covers point-to-point case), while Medium Access Control is algorithms or schemes controlling the medium access on top of a multiple access mechanism. 
+    \newline To be more detailed, Multiple Access is the basic mechanism to access multiple objects and it should be supported in the physical layer. Medium Access Control allocate and control slots, it controls how multiple access functions. It is supported in data link layer.
+    
+    \item
+    For static channelization, slots allocated to nodes stay static and MAC functions do not need to work. It is to partition medium and features dedicated allocation to users.
+    \newline
+    Guard time is needed in TDMA because of propagation delay between stations. Without guard time, for example a station A may send out a package at time slot 1, but another station B may receive in time slot 2. Meanwhile, in time slot 2, C will send packages. Then collisions may occur at station B when packages from A and C arrives at the same time.
+    
+    \item
+    TDMA needs to allocate slots for different users. However, at the very beginning, it does not know how many resources should be allocated to each user. And users do not have resources to send request to the controller. Thus, mini slots will be setup at the beginning, allowing users to send requests through mini slots. However, the mini slot allocation are often random because the number of slots may be smaller than the number of users. Thus, users may use slotted Aloha to compete for one mini slot, with a roughly less than 36\% success rate.
+    
+    \item
+    \begin{enumerate}
+        \item Denote the transmission time for one package is $X$ and it is sent at $t_0$. Then, the vulnerable period for ALOHA is $[t_0-X, t_0+X]$ because another package that begin to send at this period will collide with this package.
+        \newline For slotted ALOHA, the vulnerable period is $[t_0-X, t_0]$. Because for slotted ALOHA, new frames can only be sent at edges of slots. Potential collisions are due to re-transmission.
+        
+        \item
+        The vulnerable period for CSMA is twice the propagation time. To make sure CSMA works better than ALOHA, we should ensure that the transmission time is longer than the propagation time.
+        
+        \item 
+        If detection of collision is enabled, the transmission can be aborted at the moment the collision is detected. However, without collision detection, transmission still goes on even if collision happens. This early abortion saves time.
+        
+    \end{enumerate}
+    
+    \item
+    For token-ring based polling protocol, if a station wants to transmit, it finds out a free token and flip it to busy and transmit. After transmission, it inserts a free token.
+    \newline
+    For single-frame operation, a free token is inserted only after the transmission station receives the last bit of the message. 
+    \newline
+    For single-token operation, a free token is inserted after the last bit of busy token is traced back.
+    \newline
+    For multi-token operation, a free token is inserted right after the last bit of data frame being sent out.
+    
+    
+\end{enumerate}
+
+\end{document}
