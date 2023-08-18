@@ -1,0 +1,1 @@
+Please note that although I gained all marks for question 8 in homework 1, I met with a similar question in the exam and got one points deducted. Possibly there exists some mismatch in the sequence of the columns. However, I know neither the correctness of the answer, nor the correct way to solve the problem.
