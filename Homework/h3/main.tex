@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 
 \title{VE489 Homework3}
-\author{Wei Yinuo 520370910103}
+\author{Wei, Yinuo 520370910103}
 \date{June 2023}
 
 \begin{document}
@@ -24,8 +24,9 @@
     
     \item
     \begin{enumerate}
-        \item Denote the transmission time for one package is $X$ and it is sent at $t_0$. Then, the vulnerable period for ALOHA is $[t_0-X, t_0+X]$ because another package that begin to send at this period will collide with this package.
-        \newline For slotted ALOHA, the vulnerable period is $[t_0-X, t_0]$. Because for slotted ALOHA, new frames can only be sent at edges of slots. Potential collisions are due to re-transmission.
+        \item 
+        Denote the transmission time for one frame $A$ is $X$ and it is sent at $t_0$. Then, the vulnerable period for ALOHA is $[t_0-X, t_0+X]$ because another frame that begins to be sent by another station at this period will collide with this frame $A$.
+        \newline For slotted ALOHA, the vulnerable period is $[t_0-X, t_0]$. Because for slotted ALOHA, new frames can only be sent at edges of slots. Thus, for other frames ready at $[t_0-X, t_0]$, they will be sent at $t_0$, thus colliding with this frame $A$. However, frames ready at $[t_0, t_0+X]$ won't affect the transmission of this frame $A$, because they will be sent at $t_0+X$, at which time this frame $A$ would have finished transmission.
         
         \item
         The vulnerable period for CSMA is twice the propagation time. To make sure CSMA works better than ALOHA, we should ensure that the transmission time is longer than the propagation time.
